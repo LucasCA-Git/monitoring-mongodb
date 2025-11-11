@@ -1,0 +1,7 @@
+---
+- name: 9. Executa o script imediatamente
+  ansible.builtin.shell:
+    cmd: /opt/info_maquina/run.sh
+    chdir: /opt/info_maquina
+  changed_when: true
+  register: r_exec

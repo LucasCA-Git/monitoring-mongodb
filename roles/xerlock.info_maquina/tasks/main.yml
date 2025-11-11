@@ -1,73 +1,30 @@
-# roles/info_maquina/tasks/main.yml
+---
+# tasks/main.yml
 
-- name: 1. Garante que o diretório do projeto exista
-  ansible.builtin.file:
-    path: /opt/info_maquina
-    state: directory
-    owner: root
-    group: root
-    mode: '0755'
-  register: r_diretorio
+- name: Configuração inicial do diretório e arquivos base
+  import_tasks: setup.yml
+  tags: setup
 
-- name: 2. Copia o arquivo de dependências
-  ansible.builtin.copy:
-    src: files/requirements.txt
-    dest: /opt/info_maquina/requirements.txt
-    owner: root
-    mode: '0644'
-  register: r_reqs
+- name: Criação do arquivo .env
+  import_tasks: env.yml
+  tags: env
 
-- name: 3. Copia dados_maquina.py
-  ansible.builtin.copy:
-    src: files/dados_maquina.py
-    dest: /opt/info_maquina/dados_maquina.py
-    owner: root
-    mode: '0755'
-  register: r_script
+- name: Criação do ambiente virtual venv
+  import_tasks: venv.yml
+  tags: venv
 
-- name: 4. Cria o arquivo .env a partir de um template 
-  become: true
-  ansible.builtin.template:
-    src: env.j2
-    dest: /opt/info_maquina/.env
-    owner: root
-    mode: '0600'
+- name: Instalação das dependências
+  import_tasks: deps.yml
+  tags: deps
 
-- name: 5. Cria o ambiente virtual venv
-  become: true
-  ansible.builtin.shell:
-    cmd: python3 -m venv venv
-    chdir: /opt/info_maquina
-  args:
-    creates: /opt/info_maquina/venv/bin/activate
-  register: r_venv
+- name: Copia script run.sh
+  import_tasks: run.yml
+  tags: run
 
-- name: 6. Instala as dependências
-  ansible.builtin.shell:
-    cmd: venv/bin/pip install -r requirements.txt
-    chdir: /opt/info_maquina
-  register: r_pip
+- name: Criação do cron job
+  import_tasks: cron.yml
+  tags: cron
 
-- name: 7. Copia o script run.sh
-  ansible.builtin.copy:
-    src: files/run.sh
-    dest: /opt/info_maquina/run.sh
-    owner: root
-    mode: '0755'
-  register: r_run
-
-- name: 8. Cria cron job
-  ansible.builtin.cron:
-    name: "Executar coleta de dados"
-    minute: "0"
-    hour: "0,12"
-    job: "/opt/info_maquina/run.sh"
-    state: present
-  register: r_cron
-
-- name: 9. Executa o script imediatamente
-  ansible.builtin.shell:
-    cmd: /opt/info_maquina/run.sh
-    chdir: /opt/info_maquina
-  changed_when: true
-  register: r_exec
+- name: Execução imediata do script
+  import_tasks: exec.yml
+  tags: exec

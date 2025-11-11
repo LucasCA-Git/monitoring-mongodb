@@ -1,0 +1,9 @@
+---
+- name: 5. Cria o ambiente virtual venv
+  become: true
+  ansible.builtin.shell:
+    cmd: python3 -m venv venv
+    chdir: /opt/info_maquina
+  args:
+    creates: /opt/info_maquina/venv/bin/activate
+  register: r_venv

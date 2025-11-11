@@ -1,0 +1,25 @@
+---
+- name: 1. Garante que o diretório do projeto exista
+  ansible.builtin.file:
+    path: /opt/info_maquina
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  register: r_diretorio
+
+- name: 2. Copia o arquivo de dependências
+  ansible.builtin.copy:
+    src: files/requirements.txt
+    dest: /opt/info_maquina/requirements.txt
+    owner: root
+    mode: '0644'
+  register: r_reqs
+
+- name: 3. Copia dados_maquina.py
+  ansible.builtin.copy:
+    src: files/dados_maquina.py
+    dest: /opt/info_maquina/dados_maquina.py
+    owner: root
+    mode: '0755'
+  register: r_script
