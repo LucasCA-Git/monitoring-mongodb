@@ -28,11 +28,16 @@ Ansible instalado no controlador (sua máquina).
 │   └── deploy_scripts.yml     
 ├── vars/
 │   └── info_maquina.yml        
-├── bash-scripts/
-│   ├── info_maquina/          
+├── role/
+│   ├── xerlock.info_maquina/
+│   ├── main.yml              
+│   ├── files/
+│   │   ├── .env
 │   │   ├── dados_maquina.py    
-│   │   ├── requirements.txt    
-│   │   └── env.j2              
+│   │   ├── requirements.txt
+│   │   ├── run.sh     
+│   ├── template/
+│   │   ├── env.j2
 │   └── run.sh                  
 ├── .gitignore                  
 └── README.md
