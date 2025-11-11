@@ -12,6 +12,10 @@ Ansible instalado no controlador (sua máquina).
 - MongoDB instalado e configurado (com autenticação ativada) no servidor de destino.
 - Conexão SSH configurada para o servidor de destino (ou localhost).
 
+```bash
+ansible-playbook playbooks/deploy_scripts.yml --ask-become-pass 
+```
+- so colocar a senha definida na variavel 
 
 ### Tecnologias Utilizadas
 - **Automação:** Ansible 2.9+
