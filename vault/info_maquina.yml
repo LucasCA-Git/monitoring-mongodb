@@ -1,0 +1,3 @@
+  mongo_user: "root"
+  mongo_password: "root" 
+  mongo_host_port: "localhost:27017"
