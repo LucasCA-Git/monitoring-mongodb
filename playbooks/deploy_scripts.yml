@@ -1,0 +1,14 @@
+---
+- name: Deploy Info Maquina Scripts (via Role)
+  hosts: localhost
+  connection: local
+  become: no
+  gather_facts: yes
+
+  vars_files:
+    - ../vault/info_maquina.yml
+
+  tasks:
+    - name: "Monitoramento Info Maquina - Include Role"
+      ansible.builtin.include_role:
+        name: xerlock.info_maquina
