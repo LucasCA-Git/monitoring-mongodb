@@ -59,7 +59,7 @@ mongo_user: "root" # (Ajustar para usuário com menos privilégios em produção
 mongo_password: "SUA_SENHA_FORTE" 
 mongo_host_port: "localhost:27017"
 ```
-### Utilizando e fazendo uma pesquisa via mongosh:
+### Utilizando e fazendo uma query via mongosh:
 ```bash
 mongosh
 
