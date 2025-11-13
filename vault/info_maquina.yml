@@ -1,3 +1,15 @@
-  mongo_user: "root"
-  mongo_password: "root" 
-  mongo_host_port: "localhost:27017"
+mongo_user: "root"
+mongo_password: "root"
+mongo_host_port: "192.168.56.10:27017" 
+ 
+# Diretório e arquivo do .env
+info_maquina_dir: /opt/info_maquina
+info_maquina_env_path: "{{ info_maquina_dir }}/.env"
+info_maquina_env_template: templates/env.j2
+
+# Permissões dinâmicas — se adapta ao ambiente
+default_user: "{{ ansible_user | default(ansible_env.USER) | default('fnadmin') }}"
+default_group: "{{ ansible_user | default(ansible_env.USER) | default('fnadmin') }}"
+
+info_maquina_dir_mode: "0755"
+info_maquina_env_mode: "0644"
