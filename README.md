@@ -28,13 +28,21 @@ ansible-playbook playbooks/deploy_scripts.yml --ask-become-pass
 ### Estrutura do Repositório
 ```
 /datalake-playbooks/
+├── inventory/
+│   └── teste.yml
 ├── playbooks/
-│   └── deploy_scripts.yml     
-├── vars/
-│   └── info_maquina.yml        
+│   └── deploy_scripts.yml            
 ├── role/
 │   ├── xerlock.info_maquina/
-│   ├── main.yml              
+│   ├── tasks/
+│   │   ├── cron.yml
+│   │   ├── deps.yml
+│   │   ├── env.yml
+│   │   ├── exec.yml
+│   │   ├── main.yml
+│   │   ├── run.yml
+│   │   ├── setup.yml
+│   │   ├── venv.yml
 │   ├── files/
 │   │   ├── .env
 │   │   ├── dados_maquina.py    
@@ -42,9 +50,11 @@ ansible-playbook playbooks/deploy_scripts.yml --ask-become-pass
 │   │   ├── run.sh     
 │   ├── template/
 │   │   ├── env.j2
-│   └── run.sh                  
+├── vault/
+│   └── info_maquina.yml                   
 ├── .gitignore                  
 └── README.md
+└── vagrantfile
 ```
 
 
@@ -70,3 +80,65 @@ mongosh
 show dbs
 db.maquina_dados.find().pretty()
 ```
+# **Melhorias**
+
+### Instalação do mongodb via ansible no master
+
+#### Instalando mongodb na vm master manualmente
+
+- Importar a chave GPG oficial
+```bash
+curl -fsSL https://pgp.mongodb.com/server-6.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg --dearmor
+```
+
+- Adicionar o repositório (usando o de Jammy)
+- **“jammy” = Ubuntu 22.04 — compatível com Ubuntu 24.04**
+
+```bash
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+```
+
+- Atualizar pacotes e instalar
+```bash
+sudo apt update
+sudo apt install -y mongodb-org
+```
+
+- Habilitar e iniciar o serviço
+
+```bash
+sudo systemctl enable mongod
+sudo systemctl start mongod
+```
+
+- Verificar status
+```bash
+sudo systemctl status mongod
+```
+
+# Correções manuais momentaneas que irão ser via ansible 
+```bash
+sudo chown -R vagrant:vagrant /opt/info_maquina
+sudo chmod -R 755 /opt/info_maquina
+
+cd /opt/info_maquina
+source venv/bin/activate
+python dados_maquina.py
+deactivate
+
+sudo vim /etc/mongod.conf
+
+cat /etc/mongod.conf 
+```
+
+# network interfaces
+
+```bash
+cat /etc/mongod.conf # Precisa editar isso, talvez vou colocar um script ou template aqui 
+```
+
+```
+net:
+  port: 27017
+  bindIp: 0.0.0.0 # Aqui precisa ser 0.0.0.0 para rodar via vagrant 
+```  
