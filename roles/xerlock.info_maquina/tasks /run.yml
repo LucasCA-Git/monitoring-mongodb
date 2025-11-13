@@ -1,0 +1,8 @@
+---
+- name: 7. Copia o script run.sh
+  ansible.builtin.copy:
+    src: files/run.sh
+    dest: /opt/info_maquina/run.sh
+    owner: root
+    mode: '0755'
+  register: r_run
