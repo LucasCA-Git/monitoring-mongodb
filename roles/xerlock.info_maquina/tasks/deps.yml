@@ -1,6 +1,0 @@
----
-- name: 6. Instala as dependências
-  ansible.builtin.shell:
-    cmd: venv/bin/pip install -r requirements.txt
-    chdir: /opt/info_maquina
-  register: r_pip

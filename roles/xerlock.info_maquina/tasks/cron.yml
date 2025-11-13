@@ -1,9 +1,0 @@
----
-- name: 8. Cria cron job
-  ansible.builtin.cron:
-    name: "Executar coleta de dados"
-    minute: "0"
-    hour: "0,12"
-    job: "/opt/info_maquina/run.sh"
-    state: present
-  register: r_cron
