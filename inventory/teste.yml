@@ -1,0 +1,19 @@
+all:
+  hosts:
+    master:
+      ansible_host: 127.0.0.1
+      ansible_port: 2222
+      ansible_user: vagrant
+      ansible_ssh_private_key_file: /home/HOMELOCAL/monitoring-mongodb/.vagrant/machines/master/virtualbox/private_key # Path to your Vagrant private key
+      ansible_become: yes
+      ansible_become_method: sudo
+      ansible_become_password: ""
+
+    worker1:
+      ansible_host: 127.0.0.1
+      ansible_port: 2200
+      ansible_user: vagrant
+      ansible_ssh_private_key_file: /home/HOMELOCAL/datalake-playbooks/.vagrant/machines/worker1/virtualbox/private_key # Path to your Vagrant private key
+      ansible_become: yes
+      ansible_become_method: sudo
+      ansible_become_password: ""
